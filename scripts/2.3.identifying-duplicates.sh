@@ -67,7 +67,7 @@ comm -23 <(sort query_ids.txt) <(sort hits_ids.txt) > no_hits_ids.txt
 awk 'BEGIN {OFS=","} {print $1, "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"}' no_hits_ids.txt > no_hits.csv
 
 # Combine the second hits and the no hits into a final output
-cat filtered_hits.csv no_hits.csv > ${bed_basename}_duplicate-BLASTing_filtered.csv
+cat filtered_hits.csv no_hits.csv > ${bed_basename}_duplicate-BLASTing_res.csv
 
 # Clean up files
 rm ${bed_basename}_slop.bed ${bed_basename}_flanked.fasta* ${bed_basename}_duplicate-BLASTing_temp.csv sorted_hits.csv filtered_hits.csv query_ids.txt hits_ids.txt no_hits_ids.txt no_hits.csv

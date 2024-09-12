@@ -1,7 +1,7 @@
 **HGT analysis pipeline**
 -------------
 
-Description of the different steps and scripts used. The scripts outlined below are in the 'scripts' folder.
+Description of the different steps and scripts used. The scripts outlined below are in the 'scripts' folder. The key output files are in the 'data' folder.
 
 ***1. Aligning putative Blattabacterium inserts***
 
@@ -14,7 +14,7 @@ Blattabacterium genomes are chopped up and aligned to the Blaberidae cockroach g
 `bash 1.1.chopping_genome.sh Blattabacterium-genome.fasta Blattabacterium-genome_chopped.fasta 150`  
 After running the script on each genome, combine the various chopped up genomes with 'cat.'
 
-*Step 1.2:* Align the chopped up Blattabacterium to the reference genome using bwa. Using bwa default parameters:  
+*Step 1.2:* Align the chopped up Blattabacterium to the reference host genome using bwa mem, implementing default parameters:  
 `bwa index reference-genome.fasta`  
 `bwa mem reference-genome.fasta Blattabacterium-genome_chopped.fasta > alignment.sam`  
 
