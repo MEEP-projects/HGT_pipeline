@@ -1,0 +1,2 @@
+seqkit fx2tab --length --name --header-line Z4_flye-assembly_polished-it2_filtered.fasta > Z4_contig-lengths.txt
+
