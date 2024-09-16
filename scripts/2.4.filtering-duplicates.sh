@@ -23,34 +23,17 @@ awk -F ',' -v id="$identity" -v qc="$qcov" '$3 > id && $13 > qc && $3 != "NA" &&
 	awk -F ',' '{print $1 "," $2}' | \
 	sort | awk -F ',' '!seen[$1]++ && !seen[$2]++ {print $2}' > ids_to_remove.txt
 
+# Adjust `ids_to_remove.txt` to match BED format
+awk -F '[: -]' '{print $1 "\t" $2 "\t" $3}' ids_to_remove.txt > ids_bed_format.bed
 
 # Remove these sequences from the original bed file.
-#grep -v -F -f ids_to_remove2.txt ${bed_basename}.bed > ${bed_basename}_dup-filtered.bed
-
-
-# Create a temporary file with a regex pattern
-awk -F '[ :]' '{print $1 ":" $2}' ids_to_remove.txt | sed 's/$/|/' | tr -d '\n' | sed 's/|$//' > ids_regex.txt
-
-# Filter bed
-awk -F '\t' -v ids_regex="$(cat ids_regex.txt)" '
-BEGIN { split(ids_regex, ids, "|") }
-{
-    match_found = 0
-    for (i in ids) {
-        if ($1 ~ ids[i]) {
-            match_found = 1
-            break
-        }
-    }
-    if (!match_found) print $0
-}' ${bed_basename}.bed > ${bed_basename}_dup-filtered.bed
-
+bedtools intersect -v -a ${bed_basename}.bed -b ids_bed_format.bed > ${bed_basename}_dup-filtered.bed
 
 # Count the lines (IDs) in ids_to_remove.txt
 count=$(wc -l < ids_to_remove.txt)
 
 # Clean up 
-rm ids_to_remove.txt  ids_to_remove2.txt
+rm ids_to_remove.txt ids_bed_format.bed
 
 # Print the count of removed IDs
 echo "$count inserts have been removed."
