@@ -72,9 +72,6 @@ cat filtered_hits.csv no_hits.csv > ${bed_basename}_duplicate-BLASTing_res.csv
 # Clean up files
 rm ${bed_basename}_slop.bed ${bed_basename}_flanked.fasta* ${bed_basename}_duplicate-BLASTing_temp.csv sorted_hits.csv filtered_hits.csv query_ids.txt hits_ids.txt no_hits_ids.txt no_hits.csv
 
-## For high-ish hits, only keep one of the inserts?
-# What query coverage to filter on?
-
 
 
 
