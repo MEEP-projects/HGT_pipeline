@@ -7,18 +7,19 @@ Description of the different steps and scripts used. The scripts outlined below 
 
 Blattabacterium genomes are chopped up and aligned to the Blaberidae cockroach genome.
 
-*Scripts:*
+*Scripts:*  
 `1.1.chopping_genome.sh`  
 
 ***Step 1.1:*** Chop up the Blattabacterium genome in 150 nucleotide chunks to prepare for the alignment. The script is run specifying the input and output name, as well as the length of the 'chunks' you want chopped up:  
 `bash 1.1.chopping_genome.sh Blattabacterium-genome.fasta Blattabacterium-genome_chopped.fasta 150`  
+
 After running the script on each genome, combine the various chopped up genomes with 'cat.'
 
 ***Step 1.2:*** Align the chopped up Blattabacterium to the reference host genome using bwa mem, implementing default parameters:  
 `bwa index reference-genome.fasta`  
 `bwa mem reference-genome.fasta Blattabacterium-genome_chopped.fasta > alignment.sam`  
 
-If needed, you can extract the longest contigs before the alignment using the script 'extract-longest-contigs.sh'. Here's how you would extract the top 3 longest contigs.
+If needed, you can extract the longest contigs before the alignment using the script 'extract-longest-contigs.sh'. Here's how you would extract the top 3 longest contigs.  
 `bash extract-longest-contigs.sh assembly-input.fasta output.fasta 3`  
 
 
@@ -34,8 +35,9 @@ Filtering and annotating the putative HGT inserts.
 `2.5.annotating-bed.sh`  
 `2.6.raw-read_assessment.sh`  
 
-***Step 2.1:*** The alignment is converted into a BED file, representing the putative HGT regions. Overlapping Blattabacterium chunk alignments and near neighbouring alignments are merged into a single putative HGT region. Regions shorter than a specified length are filtered out. The pipeline is run with the following:
+***Step 2.1:*** The alignment is converted into a BED file, representing the putative HGT regions. Overlapping Blattabacterium chunk alignments and near neighbouring alignments are merged into a single putative HGT region. Regions shorter than a specified length are filtered out. The pipeline is run with the following:  
 `bash 2.1.extracting-bed.sh`  
+
 The following key parameters need to be set within the bash script:  
 - *merging_gap=150* --> this is the acceptable gap between neighbouring aligned reads that will be merged into a single putative HGT insert
 - *min_length=50* --> this is the minimum putative HGT insert length to retain in the BED file
@@ -45,22 +47,24 @@ The following key parameters need to be set within the bash script:
 
 ***Step 2.3:*** The most common assembly error is false duplication, hence some duplicate inserts may be artefacts. To identify duplicates, each insert is extracted with some flanking region. It is then BLASTed against all other inserts within the genome, and the top hit is extracted (excluding the hit to itself). This BLAST search can be run for each genomes using the following:  
 `bash 2.3.identifying-duplicates.sh`  
+
 The following key parameter needs to be set within the bash script:  
 - *flank=300* --> flanking length on either end of putative insert
 
 Very high hits are considered false duplicates, and should be removed from the inserts file so that the number of inserts in the genome is not overestimated. This can be done by running:  
 `bash 2.4.filtering-duplicates.sh`  
+
 The following key parameters needs to be set within the bash script:  
-- *identity=90* --> filtering out hits above 90% identity
-- *qcov=90* --> filtering out hits above 90% query coverage
+- *identity=90* --> removing hits above 90% identity
+- *qcov=90* --> removing hits above 90% query coverage
 
 This output of the above will create another bed file with the suffic *_dup-filtered.bed*. It will also state how many inserts were removed. This filtered bed file will be used in subsequent steps.  
 
 ***Important note:*** *There may be groups of false duplicates (i.e. >2 regions that are very close to one another). The pipeline above only considers pairs of false duplicates - if there is a group, it will not remove them all. Hence, this pipeline should be repeated, until 0 inserts are removed; i.e. the output of script '2.4.filtering-duplicates.sh' should be input for '2.3.identifying-duplicates.sh', and the pipeline can then be followed as above. It might take 2-3 iterations to remove all false duplications (depending on the assembly quality). It's important to properly label your bed file after this filtering (you may be left with numerous bed files with growing '_dup-filtered.bed' suffixes.*  
 
 ***Step 2.4:*** Some HGT inserts might be the result of a real duplication event, and some might have ‘jumped’ around the genome with a transposon. These are real inserts, but do not represent unique HGT events (i.e. one event occurred, then the insert was duplicated). These real duplications will have relatively high sequence similarity. Hence, to filter the genomes of duplicates, *Step 2.3* should be repeated, but changing the identify/coverage thresholds for script '2.3.identifying-duplicates.sh':  
-- *identity=70* --> filtering out hits above 90% identity
-- *qcov=70* --> filtering out hits above 90% query coverage
+- *identity=70* --> removing hits above 70% identity
+- *qcov=70* --> removing hits above 70% query coverage
 
 After running the pipeline with the updated identity and query coverage thresholds (and iterating through it a number of times where required) you will generate a bed file with no duplicates. Hence, while the output of *Step 2.3* will indicate the number of HGT inserts in the genome, and the output of *Step 2.3* will indicate the number of unique HGT insert events in the genome.  
 
@@ -86,6 +90,7 @@ Inferring whether the filtered putative HGT inserts are ancestral, and inferring
 
 ***Step 3.2:*** Each insert is BLASTed against the particular Blattabacterium strain belong to the species the insert derived (e.g. if the insert is from the Panesthia cribrata genome, the inserts should be BLASTed agains the specific Panesthia cribrata Blattabaactrium symbiont). Only the top hit is kept. Each insert is also BLASTed against all inserts in all other cockroach/termite taxa (excluding itself). Only the top hit is kept. This can be run using:  
 `bash 3.2.BLAST-inserts_blatta-vs-host.sh`  
+
 The following key parameter needs to be set within the bash script:  
 - *inserts_dir=inserts* --> the name of the directory that contains extracted inserts (obtained from *Step 3.1*) from all cockroach/termite species (as fasta files)
 - *target_inserts=P-crib_Blatta-chunk-alignment_aligned-segments.fasta* --> the name of the insert file (within the *insert_dir* folder) that is being BLASTed.
