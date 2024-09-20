@@ -22,19 +22,47 @@ If needed, you can extract the longest contigs before the alignment using the sc
 `bash extract-longest-contigs.sh assembly-input.fasta output.fasta 3`  
 
 
-***2. Creating a BED file***
+***2. Characterising inserts***
+
+Filtering and annotating the putative HGT inserts.
 
 *Scripts:*
 `2.1.extracting-bed.sh`  
-`2.2.annotating-bed.sh`  
+`2.2.identifying-contaminants.R`  
+`2.3.identifying-duplicates.sh`  
+`2.4.filtering-duplicates.sh`  
+`2.5.annotating-bed.sh`  
+`2.6.raw-read_assessment.sh`  
 
-*Step 2.1:* The alignment is converted into a BED file, representing the putative HGT regions. Overlapping Blattabacterium chunk alignments and near neighbouring alignments are merged into a single putative HGT region. Regions shorter than a specified length are filtered out. The following parameters are used in this script:  
+*Step 2.1:* The alignment is converted into a BED file, representing the putative HGT regions. Overlapping Blattabacterium chunk alignments and near neighbouring alignments are merged into a single putative HGT region. Regions shorter than a specified length are filtered out. The pipeline is run with the following:
+`bash 2.1.extracting-bed.sh`  
+The following key parameters need to be set within the bash script:  
+- *merging_gap=150* --> this is the acceptable gap between neighbouring aligned reads that will be merged into a single putative HGT insert
+- *min_length=50* --> this is the minimum putative HGT insert length to retain in the BED file
 
-# merging_gap=150 --> this is the acceptable gap between neighbouring aligned reads that will be merged into a single putative HGT insert
-# min_length=75 --> this is the minimum putative HGT length to retain in the BED file
+*Step 2.2:* Some of the inserts might be contaminant genuine Blattabacterium DNA. These potential contaminants are identified by comparing the length of the insert to the length of the contig which it sits on. If the proportion of the insert length vs contig length exceeds a certain threshold it is possibly a Blattabacterium contig, and hence removed. This is achieved using a pipeline in R:  
+***Jil and Oscar are still working on this***
 
-*Step 2.2:* Annotating the BED file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates).
+*Step 2.3:* The most common assembly error is false duplication, hence some duplicate inserts may be artefacts. To identify duplicates, each insert is extracted with some flanking region. It is then BLASTed against all other inserts within the genome, and the top hit is extracted (excluding the hit to itself). This BLAST search can be run for each genomes using the following:  
+`bash 2.3.identifying-duplicates.sh`  
+The following key parameter needs to be set within the bash script:  
+- *flank=300* --> flanking length on either end of putative insert
 
-## To Do ##
-Append sequence IDs that contribute to this region, separated with a semi-colon. this is to see what reads are found in more than one species - i.e. this is to figure out if they are conserved - will need to eventually pull out these regions.
-There is a script called 'extracting_put-HGT_reads_TO-TEST.sh' that might be able to do this. It's a modified version of '2.1.extracting-bed.sh'.
+Very high hits are considered false duplicates, and should be removed from the inserts file. This can be done by running:  
+`bash 2.4.filtering-duplicates.sh`  
+The following key parameters needs to be set within the bash script:  
+- *identity=90* --> filtering out hits above 90% identity
+- *qcov=90* --> filtering out hits above 90% query coverage
+
+This output of the above will create another bed file with the suffic *_dup-filtered.bed*. It will also state how many inserts were removed. This filtered bed file will be used in subsequent steps.  
+
+***Important note:*** *There may be groups of false duplicates (i.e. >2 regions that are very close to one another). The pipeline above only considers pairs of false duplicates - if there is a group, it will not remove them all. Hence, this pipeline should be repeated, until 0 inserts are removed; i.e. the output of script '2.4.filtering-duplicates.sh' should be input for '2.3.identifying-duplicates.sh', and the pipeline can then be followed as above. It might take 2-3 iterations to remove all false duplications (depending on the assembly quality). It's important to properly label your bed file after this filtering (you may be left with numerous bed files with growing '_dup-filtered.bed' suffixes.*  
+
+
+*Step 2.4:* 
+
+
+
+*Step 2.5:* Annotating the BED file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates).
+
+

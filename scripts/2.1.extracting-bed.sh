@@ -9,7 +9,7 @@ alignment_basename=Z014_put-inserts_alignment_v2
 # The acceptable gap between neighbouring aligned reads that will be merged into a single putative HGT insert
 merging_gap=200
 # Minimum putative HGT length to retain in the BED file
-min_length=75
+min_length=50
 # Threads used
 threads=24
 # Path to bedtools
