@@ -26,7 +26,7 @@ If needed, you can extract the longest contigs before the alignment using the sc
 
 Filtering and annotating the putative HGT inserts.
 
-*Scripts:*
+*Scripts:*  
 `2.1.extracting-bed.sh`  
 `2.2.identifying-contaminants.R`  
 `2.3.identifying-duplicates.sh`  
@@ -48,7 +48,7 @@ The following key parameters need to be set within the bash script:
 The following key parameter needs to be set within the bash script:  
 - *flank=300* --> flanking length on either end of putative insert
 
-Very high hits are considered false duplicates, and should be removed from the inserts file. This can be done by running:  
+Very high hits are considered false duplicates, and should be removed from the inserts file so that the number of inserts in the genome is not overestimated. This can be done by running:  
 `bash 2.4.filtering-duplicates.sh`  
 The following key parameters needs to be set within the bash script:  
 - *identity=90* --> filtering out hits above 90% identity
@@ -58,11 +58,17 @@ This output of the above will create another bed file with the suffic *_dup-filt
 
 ***Important note:*** *There may be groups of false duplicates (i.e. >2 regions that are very close to one another). The pipeline above only considers pairs of false duplicates - if there is a group, it will not remove them all. Hence, this pipeline should be repeated, until 0 inserts are removed; i.e. the output of script '2.4.filtering-duplicates.sh' should be input for '2.3.identifying-duplicates.sh', and the pipeline can then be followed as above. It might take 2-3 iterations to remove all false duplications (depending on the assembly quality). It's important to properly label your bed file after this filtering (you may be left with numerous bed files with growing '_dup-filtered.bed' suffixes.*  
 
+*Step 2.4:* Some HGT inserts might be the result of a real duplication event, and some might have ‘jumped’ around the genome with a transposon. These are real inserts, but do not represent unique HGT events (i.e. one event occurred, then the insert was duplicated). These real duplications will have relatively high sequence similarity. Hence, to filter the genomes of duplicates, *Step 2.3* should be repeated, but changing the identify/coverage thresholds for script '2.3.identifying-duplicates.sh':  
+- *identity=70* --> filtering out hits above 90% identity
+- *qcov=70* --> filtering out hits above 90% query coverage
 
-*Step 2.4:* 
+After running the pipeline with the updated identity and query coverage thresholds (and iterating through it a number of times where required) you will generate a bed file with no duplicates. Hence, while the output of *Step 2.3* will indicate the number of HGT inserts in the genome, and the output of *Step 2.3* will indicate the number of unique HGT insert events in the genome.  
 
+*Step 2.5:* Annotating the filtered bed file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates). This can be run with:  
+`bash 2.5.annotating-bed.sh`  
 
+*Step 2.5:* When observing the raw sequence read alignments against the putative HGT inserts, some reads span the insert regions and elongate upstream/downstream for hundreds or thousands of nucleotides. While other reads are truncated and aligned to only the insert region, and typically have several nucleotide differences to the reads that elongate upstream/downstream. the former scenario are likely cockroach reads containing the insert region, while the latter scenario are likely Blattabacterium reads (some Blattabacterium are likely included in the sequenced DNA). This pipeline counts the reads for the two scenarios for each insert as additional evidence that there are long reads supporting the former scenario.  
+***Zhuzhi is still working on this***
 
-*Step 2.5:* Annotating the BED file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates).
 
 
