@@ -101,6 +101,12 @@ This script will output to BLAST files - one for the Blattabacterium blast, and 
 ***Step 3.3:*** The two BLAST output files from *Step 3.2* are compared to infer the age of the inserts. If the % identity is higher for the Blattabacterium BLAST compared to the cockroach/termite inser BLAST, then it is likely a recent insert. If the % identity is higher for the insert BLAST compared to the Blattabacterium BLAST, then the insert is likely ancestral. If the BLAST results are similar, we do not have confidence to infer the age of the insert. This pipeline can be run using the following R code:
 `3.3.parse-BLAST_blatta-vs-host.R`  
 
-***Step 3.4:*** Of the inserts that were inferred to be ancestral in *Step 3.3*, the combination of species the insert is found in can be used to infer the minimum age of the insert. For example, if the insert is found in Panesthia cribrata, Geoscapheus dilatatus and Neogeoscapheus hanni, the insert is at least as old as the ancestral node for these three species.  
-***Kyle is working on this***
+***Step 3.4:*** Of the inserts that were inferred to be ancestral in *Step 3.3*, the combination of species the insert is found in can be used to infer the minimum age of the insert. For example, if the insert is found in Panesthia cribrata, Geoscapheus dilatatus and Neogeoscapheus hanni, the insert is at least as old as the ancestral node for these three species. This can be run using:  
+`bash 3.4.inserts_min-age.sh`  
+***This script requires testing***  
 
+Similar to *Step 3.3*, the following key parameter needs to be set within the bash script:  
+- *inserts_dir=inserts* --> the name of the directory that contains extracted ancestral inserts. These insert fasta files can be obtained by using using a bed file of ancestral inserts, as inferred in *Step 3.3*, and utilising the script in *Step 3.1*.  
+- *target_inserts=P-crib_ancestral-inserts.fasta* --> the name of the insert file (within the *insert_dir* folder) that is being BLASTed. This should contain the putative ancestral inserts as inferred in *Step 3.3*.  
+
+The output of this script is a a column of insert IDs for the query species, and a column with all of the species the insert hits to (BLAST hits have to be >70 identity and >70% query coverage). If there are no hits, the second column will contain an 'NA'.
