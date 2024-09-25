@@ -1,8 +1,8 @@
 #!/bin/bash
 
-##################################################################################
-### BLAST putative inserts against the species-specific Blattabacterium genome ###
-##################################################################################
+############################################################################################################
+### BLAST putative inserts against the species-specific Blattabacterium genome and inserts in other taxa ###
+############################################################################################################
 
 ## Make sure all inserts from all host species (as separate fasta files), including the target species considered in this script, are in one folder ##
 
@@ -11,7 +11,6 @@ inserts_dir=inserts
 target_inserts=P-crib_Blatta-chunk-alignment_aligned-segments.fasta
 target_blattabacterium=CP142614.1.fasta
 output_basename=P-crib_BLAST_blatta-vs-hosts
-keep_BLAST_res=false
 threads=2
 # BLAST binaries path if needed
 export PATH=/Users/kyleewart/.sequenceserver/ncbi-blast-2.2.30+/bin:$PATH
