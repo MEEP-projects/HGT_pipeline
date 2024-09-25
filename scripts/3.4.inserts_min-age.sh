@@ -9,7 +9,7 @@
 
 # Set variables
 inserts_dir=inserts
-target_inserts=P-crib_ancertral-inserts.fasta
+target_inserts=P-cribrata_aligned-segments.fasta
 output_basename=P-crib_insert-ages
 threads=2
 # BLAST binaries path if needed
@@ -73,5 +73,5 @@ awk 'BEGIN {OFS="\t"} {print $1, "NA"}' no_hits_ids.txt > no_hits.tsv
 # Combine both files
 cat ${output_basename}_inserts-hits_temp3.tsv no_hits.tsv > ${output_basename}_inserts_taxa-hits.tsv
 # Clean up
-rm filtered_hits.csv no_hits.tsv no_hits_ids.txt hits_ids.txt query_ids.txt ${output_basename}_inserts-hits_temp.csv ${output_basename}_inserts-hits_temp2.csv ${output_basename}_inserts-hits_temp3.tsv concatenated_inserts.fast*
+rm no_hits.tsv no_hits_ids.txt hits_ids.txt query_ids.txt ${output_basename}_inserts-hits_temp.csv ${output_basename}_inserts-hits_temp2.csv ${output_basename}_inserts-hits_temp3.tsv concatenated_inserts.fast*
 
