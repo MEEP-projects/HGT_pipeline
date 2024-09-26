@@ -58,7 +58,7 @@ The following key parameters needs to be set within the bash script:
 - *identity=90* --> removing hits above 90% identity
 - *qcov=90* --> removing hits above 90% query coverage
 
-This output of the above will create another bed file with the suffic *_dup-filtered.bed*. It will also state how many inserts were removed. This filtered bed file will be used in subsequent steps.  
+This output of the above will create another bed file with the suffix '*_dup-filtered.bed*'. It will also state how many inserts were removed. This filtered bed file will be used in subsequent steps.  
 
 ***Important note:*** *There may be groups of false duplicates (i.e. >2 regions that are very close to one another). The pipeline above only considers pairs of false duplicates - if there is a group, it will not remove them all. Hence, this pipeline should be repeated, until 0 inserts are removed; i.e. the output of script '2.4.filtering-duplicates.sh' should be input for '2.3.identifying-duplicates.sh', and the pipeline can then be followed as above. It might take 2-3 iterations to remove all false duplications (depending on the assembly quality). It's important to properly label your bed file after this filtering (you may be left with numerous bed files with growing '_dup-filtered.bed' suffixes.*  
 
@@ -66,12 +66,12 @@ This output of the above will create another bed file with the suffic *_dup-filt
 - *identity=70* --> removing hits above 70% identity
 - *qcov=70* --> removing hits above 70% query coverage
 
-After running the pipeline with the updated identity and query coverage thresholds (and iterating through it a number of times where required) you will generate a bed file with no duplicates. Hence, while the output of *Step 2.3* will indicate the number of HGT inserts in the genome, and the output of *Step 2.3* will indicate the number of unique HGT insert events in the genome.  
+After running the pipeline with the updated identity and query coverage thresholds (and iterating through it a number of times where required) you will generate a bed file with no duplicates. Hence, while the output of *Step 2.3* will indicate the number of HGT inserts in the genome, and the output of *Step 2.4* will indicate the number of unique HGT insert events in the genome.  
 
 ***Step 2.5:*** Annotating the filtered bed file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates). This can be run with:  
 `bash 2.5.annotating-bed.sh`  
 
-***Step 2.5:*** When observing the raw sequence read alignments against the putative HGT inserts, some reads span the insert regions and elongate upstream/downstream for hundreds or thousands of nucleotides. While other reads are truncated and aligned to only the insert region, and typically have several nucleotide differences to the reads that elongate upstream/downstream. the former scenario are likely cockroach reads containing the insert region, while the latter scenario are likely Blattabacterium reads (some Blattabacterium are likely included in the sequenced DNA). This pipeline counts the reads for the two scenarios for each insert as additional evidence that there are long reads supporting the former scenario.  
+***Step 2.5:*** When observing the raw sequence read alignments against the putative HGT inserts, some reads span the insert regions and elongate upstream/downstream for hundreds or thousands of nucleotides. While other reads are truncated and aligned to only the insert region, and typically have several nucleotide differences to the reads that elongate upstream/downstream. The former scenario are likely cockroach reads containing the insert region, while the latter scenario are likely Blattabacterium reads (some Blattabacterium are likely included in the sequenced DNA). This pipeline counts the reads for the two scenarios for each insert as additional evidence that there are long reads supporting the former scenario.  
 ***Zhuzhi is still working on this***
 
 
