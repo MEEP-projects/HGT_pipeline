@@ -42,8 +42,8 @@ The following key parameters need to be set within the bash script:
 - *merging_gap=150* --> this is the acceptable gap between neighbouring aligned reads that will be merged into a single putative HGT insert
 - *min_length=50* --> this is the minimum putative HGT insert length to retain in the BED file
 
-***Step 2.2:*** Some of the inserts might be contaminant genuine Blattabacterium DNA. These potential contaminants are identified by comparing the length of the insert to the length of the contig which it sits on. If the proportion of the insert length vs contig length exceeds a certain threshold it is possibly a Blattabacterium contig, and hence removed. This is achieved using a pipeline in R:  
-***Jil and Oscar are still working on this***
+***Step 2.2:*** Some of the inserts might be contaminant genuine Blattabacterium DNA. These potential contaminants are identified by comparing the length of the insert to the length of the contig which it sits on. If the proportion of the insert length vs contig length exceeds a certain threshold it is possibly a Blattabacterium contig, and hence removed. This pipeline can be run using the following R code:  
+`2.2.identifying-contaminants.R`  
 
 ***Step 2.3:*** The most common assembly error is false duplication, hence some duplicate inserts may be artefacts. To identify duplicates, each insert is extracted with some flanking region. It is then BLASTed against all other inserts within the genome, and the top hit is extracted (excluding the hit to itself). This BLAST search can be run for each genomes using the following:  
 `bash 2.3.identifying-duplicates.sh`  
@@ -98,7 +98,7 @@ The following key parameter needs to be set within the bash script:
 
 This script will output to BLAST files - one for the Blattabacterium blast, and one for the inser database BLAST. 
 
-***Step 3.3:*** The two BLAST output files from *Step 3.2* are compared to infer the age of the inserts. If the % identity is higher for the Blattabacterium BLAST compared to the cockroach/termite inser BLAST, then it is likely a recent insert. If the % identity is higher for the insert BLAST compared to the Blattabacterium BLAST, then the insert is likely ancestral. If the BLAST results are similar, we do not have confidence to infer the age of the insert. This pipeline can be run using the following R code:
+***Step 3.3:*** The two BLAST output files from *Step 3.2* are compared to infer the age of the inserts. If the % identity is higher for the Blattabacterium BLAST compared to the cockroach/termite inser BLAST, then it is likely a recent insert. If the % identity is higher for the insert BLAST compared to the Blattabacterium BLAST, then the insert is likely ancestral. If the BLAST results are similar, we do not have confidence to infer the age of the insert. This pipeline can be run using the following R code:  
 `3.3.parse-BLAST_blatta-vs-host.R`  
 
 ***Step 3.4:*** Of the inserts that were inferred to be ancestral in *Step 3.3*, the combination of species the insert is found in can be used to infer the minimum age of the insert. For example, if the insert is found in Panesthia cribrata, Geoscapheus dilatatus and Neogeoscapheus hanni, the insert is at least as old as the ancestral node for these three species. This can be run using:  
