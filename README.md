@@ -46,7 +46,6 @@ The following key parameters need to be set within the bash script:
 `2.2.identifying-contaminants.R` 
 
 Once the putative contaminated contigs have been identified based on the length threshold, the following shell script can be used to quickly remove them and produce a new filtered file:
-
 `remove_contaminants.sh`
 
 ***Step 2.3:*** The most common assembly error is false duplication, hence some duplicate inserts may be artefacts. To identify duplicates, each insert is extracted with some flanking region. It is then BLASTed against all other inserts within the genome, and the top hit is extracted (excluding the hit to itself). This BLAST search can be run for each genomes using the following:  
