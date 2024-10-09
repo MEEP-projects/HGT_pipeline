@@ -43,7 +43,10 @@ The following key parameters need to be set within the bash script:
 - *min_length=50* --> this is the minimum putative HGT insert length to retain in the BED file
 
 ***Step 2.2:*** Some of the inserts might be contaminant genuine Blattabacterium DNA. These potential contaminants are identified by comparing the length of the insert to the length of the contig which it sits on. If the proportion of the insert length vs contig length exceeds a certain threshold it is possibly a Blattabacterium contig, and hence removed. This pipeline can be run using the following R code:  
-`2.2.identifying-contaminants.R`  
+`2.2.identifying-contaminants.R` 
+
+Once the putative contaminated contigs have been identified based on the length threshold, the following shell script can be used to quickly remove them and produce a new filtered file:
+`remove_contaminants.sh`
 
 ***Step 2.3:*** The most common assembly error is false duplication, hence some duplicate inserts may be artefacts. To identify duplicates, each insert is extracted with some flanking region. It is then BLASTed against all other inserts within the genome, and the top hit is extracted (excluding the hit to itself). This BLAST search can be run for each genomes using the following:  
 `bash 2.3.identifying-duplicates.sh`  
