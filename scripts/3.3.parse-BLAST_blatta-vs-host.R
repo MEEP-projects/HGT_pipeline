@@ -62,6 +62,13 @@ plot(diff,
      ylab = "%ID to Blattabacterium - %ID to other host inserts",
         col = "blue")
 
+## Change thresholds below depending on the graph
+# Number of ancestral inserts
+sum(diff < -50)
+# Number of recent inserts
+sum(diff > 50)
+# number of inserts we can't age
+sum(diff < 50 & diff > -50)
 
 ### NEXT STEPS
 # Exclude rows where 'identity_diff' is NA
