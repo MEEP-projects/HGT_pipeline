@@ -10,6 +10,7 @@
 # Set variables
 inserts_dir=inserts
 target_inserts=P-cribrata_aligned-segments.fasta
+ancestral_inserts=P-crib_ancestral.fasta
 output_basename=P-crib_insert-ages
 threads=2
 # BLAST binaries path if needed
@@ -22,7 +23,7 @@ ls ${inserts_dir}/*.fasta | grep -v "${target_inserts}" | xargs cat > concatenat
 makeblastdb -in concatenated_inserts.fasta -dbtype nucl
 
 # Do BLAST
-blastn -query ${inserts_dir}/${target_inserts} \
+blastn -query ${ancestral_insert} \
 	-db concatenated_inserts.fasta \
 	-out ${output_basename}_inserts-hits_temp.csv \
 	-outfmt "10 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs" \
@@ -32,7 +33,7 @@ blastn -query ${inserts_dir}/${target_inserts} \
 awk -F"," '($3 > 70 && $13 > 70)' ${output_basename}_inserts-hits_temp.csv > ${output_basename}_inserts-hits_temp2.csv
 
 
-# Process the filtered data to extract unique subject_id prefixes and append them to each uniquw query_id
+# Process the filtered data to extract unique subject_id prefixes and append them to each unique query_id
 awk -F"," '
 {
     query_id = $1
