@@ -9,12 +9,12 @@
 
 # Set variables
 inserts_dir=inserts
-target_inserts=P-cribrata_aligned-segments.fasta
-ancestral_inserts=P-crib_ancestral.fasta
-output_basename=P-crib_insert-ages
+target_inserts=B-germanica-v1_aligned-segments_filtered2_no-repeats.fasta
+ancestral_inserts=ancestral-inserts/B-germanica-v1_ancestral_insert-seq-names.fasta
+output_basename=B-germanica-v1_ancestral_insert-ages
 threads=2
 # BLAST binaries path if needed
-export PATH=/Users/kyleewart/.sequenceserver/ncbi-blast-2.2.30+/bin:$PATH
+#export PATH=/Users/kyleewart/.sequenceserver/ncbi-blast-2.2.30+/bin:$PATH
 
 ### BLAST putative inserts against database of putative inserts for all host genomes, excluding the target genome ###
 
@@ -23,7 +23,7 @@ ls ${inserts_dir}/*.fasta | grep -v "${target_inserts}" | xargs cat > concatenat
 makeblastdb -in concatenated_inserts.fasta -dbtype nucl
 
 # Do BLAST
-blastn -query ${ancestral_insert} \
+blastn -query ${ancestral_inserts} \
 	-db concatenated_inserts.fasta \
 	-out ${output_basename}_inserts-hits_temp.csv \
 	-outfmt "10 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs" \
@@ -63,7 +63,7 @@ END {
 
 # If there are no hits for a particular query id, add the name, and add a row of NAs.
 # Extract the query IDs from your original FASTA file
-grep ">" ${inserts_dir}/${target_inserts} | sed 's/>//' > query_ids.txt
+grep ">" ${ancestral_inserts} | sed 's/>//' > query_ids.txt
 # Extract the query IDs from the filtered BLAST output
 awk -F"\t" '{print $1}' ${output_basename}_inserts-hits_temp3.tsv | sort | uniq > hits_ids.txt
 # Find the query IDs with no hits
@@ -75,4 +75,3 @@ awk 'BEGIN {OFS="\t"} {print $1, "NA"}' no_hits_ids.txt > no_hits.tsv
 cat ${output_basename}_inserts-hits_temp3.tsv no_hits.tsv > ${output_basename}_inserts_taxa-hits.tsv
 # Clean up
 rm no_hits.tsv no_hits_ids.txt hits_ids.txt query_ids.txt ${output_basename}_inserts-hits_temp.csv ${output_basename}_inserts-hits_temp2.csv ${output_basename}_inserts-hits_temp3.tsv concatenated_inserts.fast*
-
