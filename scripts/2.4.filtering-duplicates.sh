@@ -24,7 +24,12 @@ awk -F ',' -v id="$identity" -v qc="$qcov" '$3 > id && $13 > qc && $3 != "NA" &&
 	sort | awk -F ',' '!seen[$1]++ && !seen[$2]++ {print $2}' > ids_to_remove.txt
 
 # Adjust `ids_to_remove.txt` to match BED format
-awk -F '[: -]' '{print $1 "\t" $2 "\t" $3}' ids_to_remove.txt > ids_bed_format.bed
+#awk -F '[: -]' '{print $1 "\t" $2 "\t" $3}' ids_to_remove.txt > ids_bed_format.bed
+# Replacing the command above with the 4 lines below in case there is a ':' or '-' in the contig name
+sed 's/\(.*\):/\1####/' ids_to_remove.txt > temp1.txt
+sed 's/\(.*\)-/\1####/' temp1.txt > temp2.txt
+awk -F '####' '{print $1 "\t" $2 "\t" $3}' temp2.txt > ids_bed_format.bed
+rm temp1.txt temp2.txt
 
 # Remove these sequences from the original bed file.
 bedtools intersect -v -a ${bed_basename}.bed -b ids_bed_format.bed > ${bed_basename}_dup-filtered.bed

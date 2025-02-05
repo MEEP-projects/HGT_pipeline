@@ -56,9 +56,10 @@ filtered <- combined_res3$query_id
 filtered2 <- sub(":(?=[^:]*$)", "\t", filtered, perl = TRUE) # Replace last colon with tab
 filtered2 <- sub(":(?=[^-]*$)", "\t", filtered2, perl = TRUE)  # Replace last dash with tab
 
-write.table(combined_res3$query_id, "inserts-to-keep.txt", quote = F, row.names = F, col.names = F)
+write.table(combined_res3$query_id, "inserts-names_to-keep.txt", quote = F, row.names = F, col.names = F)
 
-# In bash, adjust these IDs to bed format using the following
-# Note, make sure the actual contig name doesn't have a ':' or '-' in it.
-# awk -F '[: -]' '{print $1 "\t" $2 "\t" $3}' inserts-to-keep.txt > inserts-to-keep.bed
-
+# In bash, convert these IDs to bed format using the following:
+#sed 's/\(.*\):/\1####/' inserts-names_to-keep.txt > temp1.txt
+#sed 's/\(.*\)-/\1####/' temp1.txt > temp2.txt
+#awk -F '####' '{print $1 "\t" $2 "\t" $3}' temp2.txt > filtered_inserts.bed
+#rm temp1.txt temp2.txt
