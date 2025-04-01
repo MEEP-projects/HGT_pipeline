@@ -12,6 +12,8 @@ Blattabacterium genomes are chopped up and aligned to the Blaberidae cockroach g
 
 ***Step 1.1:*** Chop up the Blattabacterium genome in 150 nucleotide chunks to prepare for the alignment. The script is run specifying the input and output name, as well as the length of the 'chunks' you want chopped up:  
 `bash 1.1.chopping_genome.sh Blattabacterium-genome.fasta Blattabacterium-genome_chopped.fasta 150`  
+*threshold=150*  
+*alternate threshold=100*  
 
 After running the script on each genome, combine the various chopped up genomes with 'cat.'
 
