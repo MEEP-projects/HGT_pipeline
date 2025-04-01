@@ -41,8 +41,8 @@ Filtering and annotating the putative HGT inserts.
 `bash 2.1.extracting-bed.sh`  
 
 The following key parameters need to be set within the bash script:  
-- *merging_gap=150* --> this is the acceptable gap between neighbouring aligned reads that will be merged into a single putative HGT insert
-- *min_length=50* --> this is the minimum putative HGT insert length to retain in the BED file
+- *merging_gap=150* --> this is the acceptable gap (in bp) between neighbouring aligned reads that will be merged into a single putative HGT insert (*alternate threshold = 50 bp*)
+- *min_length=50* --> this is the minimum putative HGT insert length (in bp) to retain in the BED file (*alternate threshold = 30 bp*)
 
 ***Step 2.2:*** Some of the inserts might be contaminant genuine Blattabacterium DNA. These potential contaminants are identified by comparing the length of the insert to the length of the contig which it sits on. If the proportion of the insert length vs contig length exceeds a certain threshold it is possibly a Blattabacterium contig, and hence removed. This pipeline can be run using the following R code:  
 `2.2.identifying-contaminants.R` 
