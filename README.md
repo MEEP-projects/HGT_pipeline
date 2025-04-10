@@ -81,7 +81,7 @@ Files filtered in this step are given the suffix *filtered3.bed*
 
 ***Step 2.5:*** Some of the regions identified as putative HGT inserts may actually be artefacts of BLAST alignment between independently arisen, highly repetitive regions of the bacterial and cockroach genomes. To remove these, the sequences of the putative inserts are extracted from the cockroach genomes, identified using the bed files produced in Step 2.4.
 
-Low-entropy regions are then found (and masked) using the sdust algorithm in the minimap package. These are replaced with Ns using replace_with_Ns.sh. Any "HGT" contigs with a contiguous string of Ns >= 50% of the total length are removed with N_content_contiguous.sh.
+Low-entropy regions are then found (and masked) using the sdust algorithm in the minimap package. Any "HGT" contigs with a contiguous masked region >= 50% of the total length are removed.
 
 Files filtered in this step are given the suffix *filtered4.bed*
 
