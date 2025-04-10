@@ -69,15 +69,21 @@ This output of the above will create another bed file with the suffix '*_dup-fil
 
 ***Important note:*** *There may be groups of false duplicates (i.e. >2 regions that are very close to one another). The pipeline above only considers pairs of false duplicates - if there is a group, it will not remove them all. Hence, this pipeline should be repeated, until 0 inserts are removed; i.e. the output of script '2.4.filtering-duplicates.sh' should be input for '2.3.identifying-duplicates.sh', and the pipeline can then be followed as above. It might take 2-3 iterations to remove all false duplications (depending on the assembly quality). It's important to properly label your bed file after this filtering (you may be left with numerous bed files with growing '_dup-filtered.bed' suffixes.*  
 
+Files filtered in this step are given the suffix *filtered2.bed*
+
 ***Step 2.4:*** Some HGT inserts might be the result of a real duplication event, and some might have ‘jumped’ around the genome with a transposon. These are real inserts, but do not represent unique HGT events (i.e. one event occurred, then the insert was duplicated). These real duplications will have relatively high sequence similarity. Hence, to filter the genomes of duplicates, *Step 2.3* should be repeated, but changing the identify/coverage thresholds for script '2.3.identifying-duplicates.sh':  
 - *identity=70* --> removing hits above 70% identity
 - *qcov=70* --> removing hits above 70% query coverage
 
 After running the pipeline with the updated identity and query coverage thresholds (and iterating through it a number of times where required) you will generate a bed file with no duplicates. Hence, while the output of *Step 2.3* will indicate the number of HGT inserts in the genome, and the output of *Step 2.4* will indicate the number of unique HGT insert events in the genome.  
 
+Files filtered in this step are given the suffix *filtered3.bed*
+
 ***Step 2.5:*** Some of the regions identified as putative HGT inserts may actually be artefacts of BLAST alignment between independently arising, highly repetitive regions of the bacterial and cockroach genomes. To remove these, the sequences of the putative inserts are extracted from the cockroach genomes by running **script**, where the inserts are identified using the bed files produced in Step 2.4.
 
 Low-entropy regions are then found (and masked) using the sdust algorithm in the minimap package. These are replaced with Ns using **script**. Any individual "HGT" contigs with a contiguous string of Ns >= 50% of their length are removed with **script**.
+
+Files filtered in this step are given the suffix *filtered4.bed*
 
 ***Step 2.6:*** Annotating the filtered bed file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates). This can be run with:  
 `bash 2.5.annotating-bed.sh`  
