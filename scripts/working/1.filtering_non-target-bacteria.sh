@@ -5,11 +5,21 @@
 #########################
 
 # Downloaded from GTDB (https://gtdb.ecogenomic.org/downloads)
-# Also removed duplicate ID’s with:
-#seqkit rmdup GenBank_unfiltered.fasta > GenBank_filtered.fasta
+# Using the GCF (RefSeq) version
+find GCF -type f -name "*.gz" -not -name "._*" -print0 | xargs -0 gzcat > all_genomes.fna
+
+# Removed duplicate ID’s with:
+seqkit rmdup GenBank_unfiltered.fasta > GenBank_filtered.fasta
+# Didn't remove any; there are 2009663 sequences
 # And removed Blattabacterium sequences with:
-#seqkit grep -p "Blattabacterium" your_large_file.fasta | seqkit seq -n > blattabacterium_ids.txt
-#seqkit grep -v -f blattabacterium_ids.txt your_large_file.fasta > filtered_output.fasta
+seqtk seq -A all_GCF.fasta | grep '^>' | sed 's/^>//' > all_ids.txt
+grep -i 'Blattabacterium' all_ids.txt > to_remove.txt
+grep -v -F -f to_remove.txt all_ids.txt > to_keep.txt
+seqtk subseq all_GCF.fasta to_keep.txt > all_GCF_no-blattabacterium.fasta
+# 57 sequences removed
+
+# Made a BLAST database for the filtered bacteria genome database
+makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
 
 #############################################
 ## Identifying non-target bacteria regions ##
@@ -28,9 +38,6 @@ blatta_db=blattabacterium.fasta
 bacteria_db=bacteria.fasta
 # BLAST binaries path if needed
 #export PATH=/System/Volumes/Data/Users/kyleewart/anaconda3/envs/snippy_env/bin:$PATH
-# If not done already, make BLAST database for the Blattabacterium and bacteria genome fasta databases
-#makeblastdb -in ${blatta_db} -dbtype nucl
-#makeblastdb -in ${bacteria_db} -dbtype nucl
 
 
 # Index the genome
