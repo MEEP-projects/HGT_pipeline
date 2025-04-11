@@ -6,36 +6,36 @@
 
 # Downloaded from GTDB (https://gtdb.ecogenomic.org/downloads)
 # Using the GCF (RefSeq) version
-find GCF -type f -name "*.gz" -not -name "._*" -print0 | xargs -0 gzcat > all_genomes.fna
+#find GCF -type f -name "*.gz" -not -name "._*" -print0 | xargs -0 gzcat > all_genomes.fna
 
 # Removed duplicate ID’s with:
-seqkit rmdup GenBank_unfiltered.fasta > GenBank_filtered.fasta
+#seqkit rmdup GenBank_unfiltered.fasta > GenBank_filtered.fasta
 # Didn't remove any; there are 2009663 sequences
 # And removed Blattabacterium sequences with:
-seqtk seq -A all_GCF.fasta | grep '^>' | sed 's/^>//' > all_ids.txt
-grep -i 'Blattabacterium' all_ids.txt > to_remove.txt
-grep -v -F -f to_remove.txt all_ids.txt > to_keep.txt
-seqtk subseq all_GCF.fasta to_keep.txt > all_GCF_no-blattabacterium.fasta
+#seqtk seq -A all_GCF.fasta | grep '^>' | sed 's/^>//' > all_ids.txt
+#grep -i 'Blattabacterium' all_ids.txt > to_remove.txt
+#grep -v -F -f to_remove.txt all_ids.txt > to_keep.txt
+#seqtk subseq all_GCF.fasta to_keep.txt > all_GCF_no-blattabacterium.fasta
 # 57 sequences removed
 
 # Made a BLAST database for the filtered bacteria genome database
-makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
-
+#makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
+#makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
 #############################################
 ## Identifying non-target bacteria regions ##
 #############################################
 
 ## Set variables
 # bed file with putative HGT regions
-bed_basename=P-tryoni-tryoni_Z005_filtered2_no-repeats_inserts
+bed_basename=Panesthia-lata_filtered4
 # Target genome
-genome=P-tryoni-tryoni_Z005_genome-assembly.fa
+genome=M1_flye-assembly_run2_polished-it2.fasta
 # Number of threads to use for BLAST
-threads=10
+threads=2
 # Blattabacterium BLAST database
-blatta_db=blattabacterium.fasta
+blatta_db=Blattabacterium-db.fasta
 # Bacteria BLAST database (using GTDB database; https://gtdb.ecogenomic.org/downloads)
-bacteria_db=bacteria.fasta
+bacteria_db=all_GCF_no-blattabacterium.fasta
 # BLAST binaries path if needed
 #export PATH=/System/Volumes/Data/Users/kyleewart/anaconda3/envs/snippy_env/bin:$PATH
 
@@ -119,5 +119,5 @@ awk 'BEGIN {OFS=","} {print $1, "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", 
 cat ${bed_basename}_BLASTing-bacteria-temp3.csv no_hits.csv > ${bed_basename}_BLASTing-bacteria.csv
 
 # Clean up files
-rm ${bed_basename}_BLASTing-bacteria-temp1.csv ${bed_basename}_BLASTing-bacteria-temp2.csv ${bed_basename}_BLASTing-bacteria-temp3.csv query_ids.txt hits_ids.txt no_hits_ids.txt no_hits.csv
+rm ${bed_basename}_BLASTing-bacteria-temp1.csv ${bed_basename}_BLASTing-bacteria-temp2.csv ${bed_basename}_BLASTing-bacteria-temp3.csv query_ids.txt hits_ids.txt no_hits_ids.txt no_hits.csv ${bed_basename}.fasta
 
