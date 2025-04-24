@@ -27,18 +27,15 @@
 
 ## Set variables
 # bed file with putative HGT regions
-bed_basename=Panesthia-lata_filtered4
+bed_basename=Zootermopsis-nevadensis-v2_filtered4
 # Target genome
-genome=M1_flye-assembly_run2_polished-it2.fasta
+genome=Znevadensis_20230531.contig.fa
 # Number of threads to use for BLAST
 threads=2
 # Blattabacterium BLAST database
 blatta_db=Blattabacterium-db.fasta
 # Bacteria BLAST database (using GTDB database; https://gtdb.ecogenomic.org/downloads)
 bacteria_db=all_GCF_no-blattabacterium.fasta
-# BLAST binaries path if needed
-#export PATH=/System/Volumes/Data/Users/kyleewart/anaconda3/envs/snippy_env/bin:$PATH
-
 
 # Index the genome
 # Check if the index file exists
@@ -52,6 +49,7 @@ fi
 # Extract putative HGT regions
 bedtools getfasta -fi ${genome} -bed ${bed_basename}.bed > ${bed_basename}.fasta
 
+
 ## BLAST each of the inserts against Blattabacterium genome database
 blastn -query ${bed_basename}.fasta \
 	-db ${blatta_db} \
@@ -60,6 +58,7 @@ blastn -query ${bed_basename}.fasta \
 	-num_threads ${threads}
 ## OUTPUT COLUMNS
 #	#	query id	subject id	% identity	alignment length	mismatches	gap opens	q. start	q. end	s. start	s. end	evalue	bit score	query coverage (%)
+
 
 ## Parse output
 # Sort the BLAST hits by query ID, e-value, % identity, and alignment length
@@ -94,6 +93,7 @@ blastn -query ${bed_basename}.fasta \
 	-out ${bed_basename}_BLASTing-bacteria-temp1.csv \
 	-outfmt "10 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs" \
 	-num_threads ${threads}
+
 
 ## Parse output
 # Sort the BLAST hits by query ID, e-value, % identity, and alignment length

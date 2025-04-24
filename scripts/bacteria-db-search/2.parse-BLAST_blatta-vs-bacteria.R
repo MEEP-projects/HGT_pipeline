@@ -2,18 +2,24 @@
 ### PARSING THE BLATTABACTERIUM VS OTHER BACTERIA BLAST RESULTS ###
 ###################################################################
 
+## What is being filtered:
+# Inserts that don't BLAST back to the Blattabacterium database hits.
+# Inserts that are much more similar to other bacterial species than to Blattabacterium (difference is set by a threshold)
+
 # Load libraries
 library(dplyr)
 
 ## Input files
 # Blattabacterium blast hits
-blatta <- "P-tryoni-tryoni_Z005_filtered2_no-repeats_inserts_BLASTing-Blatta.csv"
+blatta <- "Zootermopsis-nevadensis-v2_filtered4_BLASTing-Blatta.csv"
 # Other bacteria blast hits
-bacteria <- "P-tryoni-tryoni_Z005_filtered2_no-repeats_inserts_BLASTing-bacteria.csv"
+bacteria <- "Zootermopsis-nevadensis-v2_filtered4_BLASTing-bacteria.csv"
+
 
 ## Thresholds
-# The Blattabacterium hit has to be 'thr' higher than the bacteria hit
-thr <- 3
+# The Blattabacterium hit has to be 'thr'% higher than the bacteria hit
+# Discard insert if bacteria hit is >'thr'% higher than the Blattabacterum hit
+thr <- 2
 
 ### Read in files
 # Define the column headers
@@ -40,21 +46,18 @@ combined_res2 <- combined_res %>%
   rename(`query_id` = `Blatta-BLAST_query_id`) %>%
   select(`query_id`, `Blatta-BLAST_subject_id`, `bac-BLAST_subject_id`, 
          `Blatta-BLAST_%_identity`, `bac-BLAST_%_identity`) %>%
-  mutate(`identity_diff` = ifelse(is.na(`Blatta-BLAST_%_identity`) & is.na(`bac-BLAST_%_identity`), NA, 
-                                  coalesce(`Blatta-BLAST_%_identity`, 0) - coalesce(`bac-BLAST_%_identity`, 0)))
+  mutate(bacID_minus_BlattaID = `bac-BLAST_%_identity` - `Blatta-BLAST_%_identity`)
+
 
 # Filtering to:
-# 1. Remove rows where 'Blatta-BLAST_%_identity' is 'NA' or '0'
-# 2. Remove rows where 'identity_diff' is <'thr'
+# 1. Remove rows where 'Blatta-BLAST_%_identity' is 'NA' and bac-BLAST_%_identity is not an NA.
+# 2. Remove rows where 'bacID_minus_BlattaID' is > 'thr'
+# Note, keeping isntances where both are NA, or when 'bac-BLAST_%_identity' is 'NA' and 'Blatta-BLAST_%_identity' is not an NA.
 combined_res3 <- combined_res2 %>%
-  filter(!is.na(`Blatta-BLAST_%_identity`) & `Blatta-BLAST_%_identity` != 0) %>%
-  filter(identity_diff >= thr)
-
-# Filtered inserts
-filtered <- combined_res3$query_id
-# Replace the last ':' and '-' with a tab
-filtered2 <- sub(":(?=[^:]*$)", "\t", filtered, perl = TRUE) # Replace last colon with tab
-filtered2 <- sub(":(?=[^-]*$)", "\t", filtered2, perl = TRUE)  # Replace last dash with tab
+  filter(
+    is.na(bacID_minus_BlattaID) | bacID_minus_BlattaID <= thr,
+    !(is.na(`Blatta-BLAST_%_identity`) & !is.na(`bac-BLAST_%_identity`))
+  )
 
 write.table(combined_res3$query_id, "inserts-names_to-keep.txt", quote = F, row.names = F, col.names = F)
 
