@@ -95,6 +95,7 @@ Files filtered in this step are given the suffix *filtered4.bed*
 ***Dating HGT inserts*** 
 
 Inferring whether the filtered putative HGT inserts are ancestral, and inferring a minimum age of the HGT insertion event.  
+*Note: For some species, multiple genomes per species were analysed to investigate whether this impacted the results. However, for this aging analysis only one genome per species was analysed (the genome comprising the highest number of charactersied inserts).*  
 
 *Scripts:*  
 `3.1.extracting-inserts.sh`  
