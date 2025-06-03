@@ -29,8 +29,8 @@ blastn -query ${ancestral_inserts} \
 	-outfmt "10 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs" \
 	-num_threads ${threads}
 
-# Only keep hits that are >70% seq identity and >70% query coverage
-awk -F"," '($3 > 70 && $13 > 70)' ${output_basename}_inserts-hits_temp.csv > ${output_basename}_inserts-hits_temp2.csv
+# Only keep hits that are >=70% seq identity and >=70% query coverage
+awk -F"," '($3 >= 70 && $13 >= 70)' ${output_basename}_inserts-hits_temp.csv > ${output_basename}_inserts-hits_temp2.csv
 
 
 # Process the filtered data to extract unique subject_id prefixes and append them to each unique query_id
