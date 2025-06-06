@@ -11,11 +11,11 @@ headers <- c("query_id", "subject_id", "%_identity", "alignment_length", "mismat
 
 
 # Read in the Blattabacterium BLAST results
-blatta_blast <- read.csv("blast_results/P-americana-v4_BLAST_blatta-vs-hosts_blatta-hits.csv", header = FALSE)
+blatta_blast <- read.csv("BLAST-results/P-americana_BLAST_blatta-vs-hosts_blatta-hits.csv", header = FALSE)
 colnames(blatta_blast) <- headers
 
 # Read in the HGT inserts BLAST results
-insert_blast <- read.csv("blast_results/P-americana-v4_BLAST_blatta-vs-hosts_inserts-hits.csv", header = FALSE)
+insert_blast <- read.csv("BLAST-results/P-americana_BLAST_blatta-vs-hosts_inserts-hits.csv", header = FALSE)
 colnames(insert_blast) <- headers
 
 
@@ -74,4 +74,8 @@ ancestral <- combined_res %>%
   filter(identity_diff < -50) %>%
   pull(query_id)
 write.table(ancestral, "ancestral_insert-seq-names.txt", quote = F, row.names = F, col.names = F)
+write.csv(combined_res, "combined-BLAST-results.csv", quote = F)
+
+# Use this file to extract the ancestral inserts from the oriignal insert fasta file:
+#seqtk subseq insert-sequences.fasta ancestral_insert-sequence-names.txt > ancestral_insertsequences.fasta
 
