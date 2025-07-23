@@ -34,6 +34,12 @@ ggplot(markers, aes(x = length)) +
 ## Distance distribution between markers ##
 ###########################################
 
+# Clean chromosome names to be safe
+markers[, chromosome := trimws(chromosome)]
+
+# Ensure they are treated as character strings
+markers[, chromosome := as.character(chromosome)]
+
 # Ensure data is sorted per chromosome and start position
 setorder(markers, chromosome, start)
 
