@@ -131,3 +131,13 @@ Similar to *Step 3.3*, the following key parameter needs to be set within the ba
 - *target_inserts=P-crib_ancestral-inserts.fasta* --> the name of the insert file (within the *insert_dir* folder) that is being BLASTed. This should contain the putative ancestral inserts as inferred in *Step 3.3*.  
 
 The output of this script is a a column of insert IDs for the query species, and a column with all of the species the insert hits to (BLAST hits have to be >70 identity and >70% query coverage). If there are no hits, the second column will contain an 'NA'.
+
+
+***Step 4.0:*** Download Blattabacterium reference sequences from NCBI. Uses `entrez-direct`
+`python 4.0.download_blatta_references.py`
+
+***Step 4.1:*** Map inserts (`data/inserts_BED/8.v2/insert-sequences`) to Blattabacterium references using `bwa mem` and `samtools`. Saves coordinates of of inserts in reference at `data/Blattabacterium/cov`
+`python 4.1align_inserts.py`
+
+***Step 4.2:*** Calculate GC% for inserts and Blattabacterium references. Uses `biopython`. Stores results in `data/Blattabacterium/gc_content/gc_content.csv` where each row corresponds to an insert from `data/inserts_BED/8.v1/insert-sequences`
+`python 4.2.calculate_GC.py`
