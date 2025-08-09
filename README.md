@@ -135,3 +135,6 @@ The output of this script is a a column of insert IDs for the query species, and
 
 ***Step 4.0:*** Download Blattabacterium reference sequences from NCBI. Uses `entrez-direct`
 `python 4.0.download_blatta_references.py`
+
+***Step 4.1:*** Map inserts (`data/inserts_BED/8.v2/insert-sequences`) to Blattabacterium references using `bwa mem` and `samtools`. Saves coordinates of of inserts in reference at `data/Blattabacterium/cov`
+`python 4.1align_inserts.py`
