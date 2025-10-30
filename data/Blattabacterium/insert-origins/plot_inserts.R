@@ -38,20 +38,36 @@ df_mod <- df %>%
   arrange(species, position) %>%
   mutate(cumcov = cumsum(cov)) %>%
   ungroup() %>%
-  select(species, position, cumcov)
+  select(species, position, cumcov, cov)
 
 
-
+# Cumulative genome inserts
 ggplot(df_mod) +
   geom_ribbon(
     aes(x = position, ymin = 0, ymax = cumcov),
     alpha = 0.3, fill = "dodgerblue", col = "black"
   ) +
   labs(x = "Genome Position (bp)", y = "Cumulative inserts") +
-  # scale_x_log10(
-  #   breaks = 10^(0:9),
-  #   labels = scales::trans_format("log10", scales::math_format(10^.x))
-  # ) +
+  facet_wrap(~species) +
+  theme_minimal() +
+  theme(
+    panel.grid.minor = element_blank(),
+    axis.text = element_text(size = 12),
+    strip.text = element_text(size = 14),
+    axis.title = element_text(size = 14)
+  )
+ggsave(
+  filename = "data/Blattabacterium/insert-origins/insert_cumulative_plot.png",
+  width = 10, height = 8, bg = "white"
+)
+
+# Not-cumulative genome inserts
+ggplot(df_mod) +
+  geom_ribbon(
+    aes(x = position, ymin = 0, ymax = cov),
+    alpha = 0.3, fill = "dodgerblue", col = "dodgerblue"
+  ) +
+  labs(x = "Genome Position (bp)", y = "No. inserts at genome position") +
   facet_wrap(~species) +
   theme_minimal() +
   theme(
