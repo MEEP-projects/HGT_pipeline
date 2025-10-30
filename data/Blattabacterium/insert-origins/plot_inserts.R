@@ -65,7 +65,7 @@ ggsave(
 ggplot(df_mod) +
   geom_ribbon(
     aes(x = position, ymin = 0, ymax = cov),
-    alpha = 0.3, fill = "dodgerblue", col = "dodgerblue"
+    alpha = 0.3, fill = "dodgerblue", col = alpha("dodgerblue", 0.3)
   ) +
   labs(x = "Genome Position (bp)", y = "No. inserts at genome position") +
   facet_wrap(~species) +
@@ -77,6 +77,6 @@ ggplot(df_mod) +
     axis.title = element_text(size = 14)
   )
 ggsave(
-  filename = "data/Blattabacterium/insert-origins/insert_cumulative_plot.png",
+  filename = "data/Blattabacterium/insert-origins/insert__plot.png",
   width = 10, height = 8, bg = "white"
 )
