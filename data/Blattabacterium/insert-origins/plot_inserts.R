@@ -31,7 +31,7 @@ df_mod <- df %>%
   group_by(species) %>%
   group_modify(~ {
     bind_rows(
-      tibble(position = c(0, 2e9), cov = c(0, 0)),
+      tibble(position = c(0, 64e4), cov = c(0, 0)),
       .x
     )
   }) %>%
@@ -42,16 +42,16 @@ df_mod <- df %>%
 
 
 
-  ggplot(df_mod) +
+ggplot(df_mod) +
   geom_ribbon(
     aes(x = position, ymin = 0, ymax = cumcov),
     alpha = 0.3, fill = "dodgerblue", col = "black"
   ) +
   labs(x = "Genome Position (bp)", y = "Cumulative inserts") +
-  scale_x_log10(
-    breaks = 10^(0:9),
-    labels = scales::trans_format("log10", scales::math_format(10^.x))
-  ) +
+  # scale_x_log10(
+  #   breaks = 10^(0:9),
+  #   labels = scales::trans_format("log10", scales::math_format(10^.x))
+  # ) +
   facet_wrap(~species) +
   theme_minimal() +
   theme(
