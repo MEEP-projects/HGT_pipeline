@@ -1,0 +1,8 @@
+Chromosome	Start	End	Feature_Type	Details	Reads
+scaffold12089	13416	13471	intergenic	.	scaffold12089:13416-13471
+scaffold15841	6144	6209	intergenic	.	scaffold15841:6144-6209
+scaffold16741	4617	4714	intergenic	.	scaffold16741:4617-4714
+scaffold23360	7568	7628	intergenic	.	scaffold23360:7568-7628
+scaffold2502	21127	21188	intron,gene,mRNA		scaffold2502:21127-21188
+scaffold2672	18396	18465	intron,gene,mRNA		scaffold2672:18396-18465
+scaffold895	36481	36567	intergenic	.	scaffold895:36481-36567
