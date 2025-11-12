@@ -7,7 +7,7 @@ library(tidyverse)
 # 1. Load input files
 # -----------------------------
 files <- list.files(
-  path = "/Users/kyleewart/Downloads/HGT_working/version2/out2",  # adjust as needed
+  path = "/Users/kyleewart/Documents/PostDoc/HGT_pipeline/data/Blattabacterium/insert-origins/out_7.2-inserts",  # adjust as needed
   pattern = "_start_counts\\.bed$",
   full.names = TRUE
 )
@@ -77,11 +77,19 @@ ggplot(df_mod2, aes(x = position, y = cumcount, color = species)) +
     color = "Species",
     title = "Cumulative inserts across Blattabacterium genomes"
   ) +
-  theme_minimal(base_size = 14) +
-  theme(panel.grid.minor = element_blank())
+  theme_classic(base_size = 14) +  # better starting point for clean axis lines
+  theme(
+    panel.grid = element_blank(),      # remove major + minor gridlines
+    panel.background = element_blank(),# no grey background
+    plot.background = element_blank(), # fully white figure background
+    axis.line = element_line(color = "black", linewidth = 1),  # add axis lines
+    axis.ticks = element_line(color = "black"),                 # solid ticks
+    plot.title = element_text(hjust = 0.5, face = "bold")       # center + bold title
+  )
+
 
 ggsave(
-  filename = "/Users/kyleewart/Downloads/HGT_working/version2/insert_cumulative_plot_v2.png",
+  filename = "/Users/kyleewart/Documents/PostDoc/HGT_pipeline/data/Blattabacterium/insert-origins/plot_inserts_v3_plot.png",
   width = 10, height = 8, bg = "white"
 )
 
