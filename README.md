@@ -1,7 +1,9 @@
 **HGT analysis pipeline**
 -------------
 
-Description of the different steps and scripts used. The scripts outlined below are in the 'scripts' folder. The key output files are in the 'data' folder.
+Description of the different steps and scripts used to characterise HGT inserts descibed in Ewart et al. (LINK). The scripts outlined below are in the 'scripts' folder. The key output files are in the 'data' folder.
+
+![Diagram](images/FigS1.png)
 
 ***1. Aligning putative Blattabacterium inserts***
 
