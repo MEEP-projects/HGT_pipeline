@@ -18,22 +18,26 @@ Description of the analyses and scripts used to analyse the HGT inserts.
 `alignment_HGT-summary.sh`  
 
 
-***Annotating inserts***  
+  
+***Annotating HGT inserts***  
 Annotating the filtered bed file using the genome assembly annotation; i.e. noting whether each putative HGT region sits within and gene, and if so, what part of the gene. This script will output multiple lines if it hits to multiple features (e.g. gene and exon) and if it overlaps features (e.g. it it spans an intergenic region and a gene this will be displayed on multiple lines with the relevant coordinates). This can be run with:  
 `bash annotating-bed.sh`  
 
 
+  
 ***GC content***  
 The following python script calculates the GC content of fasta files (i.e. the genomes or HGT inserts):  
 `gc_content.py`  
 
 
+  
 ***HGT insert length distribution***  
 The following R code calculates plots the length distribution of the annotated inserts, based on the output of 'annotating-bed.sh':  
 `inserts_lengths.R`  
 
 
-***Insert origins***  
+  
+***HGT insert origins***  
 The distribution of the origin of the inserts along the Blattabacterium genome was computed with:  
 `count_inserts-start-positions.py`  
 
@@ -41,7 +45,8 @@ This script aligns the inserts the the species specific Blattabacterium strain (
 `plot_inserts-origins.R`  
 
 
-***Putative age of inserts***  
+  
+***Putative age of HGT inserts***  
 Inferring whether the filtered putative HGT inserts are ancestral, and inferring a minimum age of the HGT insertion event.  
 
 *Step 1:* The filtered inserts from are extracted from the genomes (as a fasta file), and the species/genome name is added as a prefix to each insert sequence. This can be run using:  
@@ -76,7 +81,8 @@ Similar to *Step 3*, the following key parameter needs to be set within the bash
 The output of this script is a a column of insert IDs for the query species, and a column with all of the species the insert hits to (BLAST hits have to be >70 identity and >70% query coverage). If there are no hits, the second column will contain an 'NA'.
 
 
-***Raw read alignments for addition insert QC***  
+ 
+***Raw read alignments for addition HGT insert QC***  
 When observing the raw sequence read alignments against the putative HGT inserts, some reads span the insert regions and elongate upstream/downstream for hundreds or thousands of nucleotides, while other reads are truncated and aligned to only the insert region, and typically have several nucleotide differences to the reads that elongate upstream/downstream. The former scenario are likely cockroach reads containing the insert region, while the latter scenario are likely Blattabacterium reads (some Blattabacterium are likely included in the sequenced DNA). This pipeline identifies reads for the two scenarios for each insert as additional evidence that there are long reads supporting the former scenario.  
 
 *Step 1:* First raw ONT reads were aligned to the genome using:  

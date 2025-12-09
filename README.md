@@ -5,6 +5,7 @@ Description of the different steps and scripts used to characterise HGT inserts 
 
 ![Diagram](images/FigS1.png)
 
+  
 ***1. Characterising putative Blattabacterium HGT inserts***
 
 Blattabacterium genomes are chopped up and aligned to the Blaberidae cockroach genome.
@@ -32,6 +33,7 @@ The following key parameters need to be set within the bash script:
 - *min_length=50* --> this is the minimum putative HGT insert length (in bp) to retain in the BED file (*alternate threshold = 30 bp*)
 
 
+  
 ***2. Filtering HGT inserts***
 
 Filtering and annotating the putative HGT inserts.
@@ -87,25 +89,25 @@ This script produces to BLAST files: one for hits against the Blattabacterium da
 - *thr=2* --> the Blattabacterium hit has to be 'thr'% higher than the bacteria hit
 
 
+  
 ***Manual audit:*** *The output of this filtering produced a bed file for each genome. These putative inserts were then manually audited, through additional BLASTs and manual inspections of the sequences themselves.*  
 
 
+  
 ***Other analyses***
 
 Several analyses were undertaken on the characterised and filtered HGT inserts (following the pipeline above), including:
-- identifying putatively ancestral inserts
-- annotating the inserts
-- carrying out additional QC of the inserts to demonstrate their veracity.  
-
-
-
+- Annotating HGT inserts
+- GC content
+- HGT insert length distribution
+- Insert origins
+- Putative age of HGT inserts
+- Raw read alignments for addition HGT insert QC
 
 An outline of these analyses and the relevant scripts used can be found [here](https://github.com/MEEP-projects/HGT_pipeline/tree/main/other).
 
-Inlduing annotating, and QC analysis. See (dihfd) for details on this.
 
-
-
+  
 ***Programs used***
 
 *To do*
