@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Usage: ./find_top_contigs.sh input.fasta output.fasta 3
+# If needed, you can extract the longest contigs before the alignment using the script 'extract-longest-contigs.sh'. Here's how you would extract the top 3 longest contigs.  
+# Usage: e.g. extracting the 3 longest contigs:
+#bash extract-longest-contigs.sh assembly-input.fasta output.fasta 3
 
 input_fasta=$1
 output_fasta=$2

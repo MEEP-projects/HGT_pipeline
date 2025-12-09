@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Set variables
-
-
 ### Extract putative HGT regions ###
 
 # bed file with putative HGT regions

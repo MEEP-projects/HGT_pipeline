@@ -21,15 +21,16 @@
 # Made a BLAST database for the filtered bacteria genome database
 #makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
 #makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
+
 #############################################
 ## Identifying non-target bacteria regions ##
 #############################################
 
 ## Set variables
 # bed file with putative HGT regions
-bed_basename=Blattella-germanica-v1_filtered4
+bed_basename=Zootermopsis-nevadensis-v2_filtered4
 # Target genome
-genome=Blattella_germanica.genome.fa
+genome=Znevadensis_20230531.contig.fa
 # Number of threads to use for BLAST
 threads=2
 # Blattabacterium BLAST database
@@ -41,7 +42,7 @@ bacteria_db=all_GCF_no-blattabacterium.fasta
 # Check if the index file exists
 if [ ! -f "${genome}.fai" ]; then
     echo "Index file not found. Indexing the genome..."
-    samtools faidx -@ ${threads} ${genome}
+    samtools faidx ${genome}
 else
     echo "Index file already exists. Skipping indexing."
 fi
@@ -49,9 +50,6 @@ fi
 # Extract putative HGT regions
 bedtools getfasta -fi ${genome} -bed ${bed_basename}.bed > ${bed_basename}.fasta
 
-# Activate blast environment
-eval "$(conda shell.bash hook)"
-conda activate blast
 
 ## BLAST each of the inserts against Blattabacterium genome database
 blastn -query ${bed_basename}.fasta \
@@ -62,9 +60,6 @@ blastn -query ${bed_basename}.fasta \
 ## OUTPUT COLUMNS
 #	#	query id	subject id	% identity	alignment length	mismatches	gap opens	q. start	q. end	s. start	s. end	evalue	bit score	query coverage (%)
 
-# Activate base environment
-eval "$(conda shell.bash hook)"
-conda activate
 
 ## Parse output
 # Sort the BLAST hits by query ID, e-value, % identity, and alignment length
@@ -92,9 +87,6 @@ cat ${bed_basename}_BLASTing-Blatta-temp3.csv no_hits.csv > ${bed_basename}_BLAS
 # Clean up files
 rm ${bed_basename}_BLASTing-Blatta-temp1.csv ${bed_basename}_BLASTing-Blatta-temp2.csv ${bed_basename}_BLASTing-Blatta-temp3.csv query_ids.txt hits_ids.txt no_hits_ids.txt no_hits.csv
 
-# Activate blast environment
-eval "$(conda shell.bash hook)"
-conda activate blast
 
 ## BLAST each of the inserts against bacteria genome database
 blastn -query ${bed_basename}.fasta \
@@ -103,9 +95,6 @@ blastn -query ${bed_basename}.fasta \
 	-outfmt "10 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs" \
 	-num_threads ${threads}
 
-# Activate base environment
-eval "$(conda shell.bash hook)"
-conda activate
 
 ## Parse output
 # Sort the BLAST hits by query ID, e-value, % identity, and alignment length

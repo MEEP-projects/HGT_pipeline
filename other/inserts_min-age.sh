@@ -5,7 +5,7 @@
 ###################################################################
 
 ## Make sure all inserts from all host species (as separate fasta files), including the target species considered in this script, are in one folder ##
-# Only inlude ancestral inserts inferred from steps 3.2 and 3.3.
+# Only inlude ancestral inserts inferred from previous.
 
 # Set variables
 inserts_dir=inserts
