@@ -81,6 +81,9 @@ After running the pipeline with the updated identity and query coverage threshol
 ***Step 2.4:*** Some of the regions identified as putative HGT inserts may actually be artefacts of BLAST alignment between independently arisen, highly repetitive regions of the bacterial and cockroach genomes. To remove these, the sequences of the putative inserts are extracted from the cockroach genomes, identified using the bed files produced in *Step 2.3*.
 
 Low-entropy regions are then found (and masked) using the sdust algorithm in the minimap package. Any "HGT" contigs with a contiguous masked region >= 50% of the total length are removed.
+
+This is achieved by running *2.5.1.batch_sdust.sh* to mask repetitive regions in a fasta file containing the HGT sequences, *2.5.2.replace_with_Ns.sh* to replace those regions with ambiguous nucleotides (Ns), and *2.5.3.N_content_contiguous.sh* to identify HGTs with contiguous runs of Ns representing >= 50% of their length.
+
 ***Need to add script for this. Also I think there is a step missing here to remove sequences with flanking N's***
 
 ***Step 2.5:*** Inserts that were more similar to other bacteria species (i.e. not Blattabacterium) were removed, as they could be potential artefacts, or genuine inserts of other related Bacteriodales. Each insert was BLASTed against two custom databases: one comprising only Blattabacterum sequences database (n = 77), and one with other bacteria, with Blattabacterium sequences removed (n = 2,009,606). If the sequence similarity of the bacteria database BLAST was >2% higher than the Blattabacterium database BLAST, then the sequence was removed. This can be done by first running '2.5.filtering_non-target-bacteria.sh'. Note the details for database curation are included in this script.  
