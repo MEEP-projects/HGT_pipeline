@@ -82,13 +82,15 @@ After running the pipeline with the updated identity and query coverage threshol
 
 Low-entropy regions are then found (and masked) using the sdust algorithm in the minimap package. Any "HGT" contigs with a contiguous masked region >= 50% of the total length are removed.
 
-This is achieved by running *2.5.1.batch_sdust.sh* to mask repetitive regions in a fasta file containing the HGT sequences, *2.5.2.replace_with_Ns.sh* to replace those regions with ambiguous nucleotides (Ns), and *2.5.3.N_content_contiguous.sh* to identify HGTs with contiguous runs of Ns representing >= 50% of their length.
+This is achieved by running '2.5.1.batch_sdust.sh' to mask repetitive regions in a fasta file containing the HGT sequences, '2.5.2.replace_with_Ns.sh' to replace those regions with ambiguous nucleotides (Ns), and '2.5.3.N_content_contiguous.sh' to identify HGTs with contiguous runs of Ns representing >= 50% of their length.
 
-***Need to add script for this. Also I think there is a step missing here to remove sequences with flanking N's***
+***Step 2.5:*** For downstream analyses, it is crucial that the flanking cockroach DNA to either side of the inserts can be characterised. To ensure this is the case, HGTs for which either 300-bp flank of cockroach DNA comprises >= 50% Ns (due to ambiguities in sequencing or scaffolding).
 
-***Step 2.5:*** Inserts that were more similar to other bacteria species (i.e. not Blattabacterium) were removed, as they could be potential artefacts, or genuine inserts of other related Bacteriodales. Each insert was BLASTed against two custom databases: one comprising only Blattabacterum sequences database (n = 77), and one with other bacteria, with Blattabacterium sequences removed (n = 2,009,606). If the sequence similarity of the bacteria database BLAST was >2% higher than the Blattabacterium database BLAST, then the sequence was removed. This can be done by first running '2.5.filtering_non-target-bacteria.sh'. Note the details for database curation are included in this script.  
+Running the script '2.6.1.extract-flanks.sh' will generate fasta files comprising each HGT insert with 300 bp of flanking cockroach sequence that directly precedes and follows it. The script '2.6.2.filtering-flanks.sh' can then be used to retain only the HGTs with flanks that meet the above criterion (ie: < 50% Ns).
 
-This script produces to BLAST files: one for hits against the Blattabacterium database, and one for hits against the bacteria database.  These two outputs are analysed using '2.6.parse-BLAST_blatta-vs-bacteria.R' to identify HGT inserts that are subsequently filtered. The following threhsold is used:  
+***Step 2.6:*** Inserts that were more similar to other bacteria species (i.e. not Blattabacterium) were removed, as they could be potential artefacts, or genuine inserts of other related Bacteriodales. Each insert was BLASTed against two custom databases: one comprising only Blattabacterum sequences database (n = 77), and one with other bacteria, with Blattabacterium sequences removed (n = 2,009,606). If the sequence similarity of the bacteria database BLAST was >2% higher than the Blattabacterium database BLAST, then the sequence was removed. This can be done by first running '2.7.filtering_non-target-bacteria.sh'. Note the details for database curation are included in this script.  
+
+This script produces to BLAST files: one for hits against the Blattabacterium database, and one for hits against the bacteria database.  These two outputs are analysed using '2.8.parse-BLAST_blatta-vs-bacteria.R' to identify HGT inserts that are subsequently filtered. The following threhsold is used:  
 - *thr=2* --> the Blattabacterium hit has to be 'thr'% higher than the bacteria hit
 
 
