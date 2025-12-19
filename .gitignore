@@ -1,5 +1,4 @@
 .DS_Store
-*/.DS_Store
 
 # bwa index files
 data/Blattabacterium/refs/*.amb
