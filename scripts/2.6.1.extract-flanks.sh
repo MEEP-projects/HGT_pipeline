@@ -19,11 +19,11 @@ for fastafile in *.fasta; do
 	bed_file-"${basename}_filtered3.bed"
 
 	# Extracting regions from genome
-	Applications/bedtools2/bin/bedtools slop \
-    -i ${bed_file} -g ${genome}.fai -b 300 | \
-	Applications/bedtools2/bin/bedtools getfasta \
-    -fi ${genome} -bed - | \
-	sed "s/^>/>${prefix}_/" > ${basename}_contigs-flanked.fasta	 
+	bedtools slop \
+    	-i ${bed_file} -g ${genome}.fai -b 300 | \
+    	bedtools getfasta \
+    	-fi ${genome} -bed - | \
+    	sed "s/^>/>${prefix}_/" > ${basename}_contigs-flanked.fasta	 
 	 
 	else
    		echo "Missing genome file for: $fastafile"

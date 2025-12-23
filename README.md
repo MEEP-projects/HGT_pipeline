@@ -118,7 +118,22 @@ An outline of these analyses and the relevant scripts used can be found [here](h
 
 
   
-***Programs used***
+**Programs used**   
 
-*To do*
+- ***samtools v1.2:*** https://doi.org/10.1093/gigascience/giab008
+- ***bedtools v2.3:*** https://doi.org/10.1093/bioinformatics/btq033
+- ***bwa mem v0.7.17:*** https://doi.org/10.1093/bioinformatics/btp324
+- ***blastn v2.2.3:*** https://doi.org/10.1186/1471-2105-10-421
+- ***minimap2 v2.18:*** https://doi.org/10.1093/bioinformatics/bty191
+- ***sdust:*** https://doi.org/10.1089/cmb.2006.13.1028
+- ***seqtk v1.4:*** https://github.com/lh3/seqtk.
+- ***seqkit 2.9:*** https://doi.org/10.1371/journal.pone.0163962
+- ***python v3.11.13:*** https://www.python.org/doc/
+- ***python pandas package pandas:*** https://zenodo.org/records/17992932
+- ***python biopython package:*** https://doi.org/10.1093/bioinformatics/btp163
+- ***R package dplyr v1.1.4:*** https://cran.r-project.org/web/packages/dplyr/index.html
+- ***R package data.table v1.17.8:*** https://cran.r-project.org/web/packages/data.table/index.html
+- ***R package ggplot2 v3.5.2:*** https://cran.r-project.org/web/packages/ggplot2/index.html
+- ***R package tidyverse v2.0:*** https://cran.r-project.org/web/packages/tidyverse/index.html
+- ***R package stringr v1.5.1:*** https://cran.r-project.org/web/packages/stringr/index.html
 
