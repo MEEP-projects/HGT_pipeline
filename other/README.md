@@ -91,6 +91,12 @@ When observing the raw sequence read alignments against the putative HGT inserts
 *Step 2:* For each HGT insert, reads that aligned to the region plus some flanking sequence is extracted and saved to a new bam file using:  
 `extract_insert-aligned-reads.sh`  
 
-*Step 3:* The following script summarises the length distribution of the reads aligned to the HGT insert (i.e. whether they align to only the insert regions or whether theire alignment extends into the flanking region):  
-`alignment_HGT-summary.sh`  
+*Step 3:* The following script computes the length distribution of the reads aligned to the HGT insert (i.e. whether they align to only the insert regions or whether theire alignment extends into the flanking region):  
+`summary_HGT-alignment.sh`  
+
+*Step 4:* The following script summarises the results of the previous script:  
+`count_HGT-alignment.sh`  
+
+
+
 
