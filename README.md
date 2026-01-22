@@ -112,7 +112,7 @@ Several analyses were undertaken on the characterised and filtered HGT inserts (
 - HGT insert length distribution
 - Insert origins
 - Putative age of HGT inserts
-- Raw read alignments for addition HGT insert QC
+- Raw read alignments for additional HGT insert QC
 
 An outline of these analyses and the relevant scripts used can be found [here](https://github.com/MEEP-projects/HGT_pipeline/tree/main/other).
 
