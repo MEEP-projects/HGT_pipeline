@@ -69,7 +69,7 @@ This script will output to BLAST files - one for the Blattabacterium blast, and 
    
 Clear separations between these three cases were evident in each of the analyses. For example, the image below shows all inserts from *Panesthia tryoni tryoni* (Eungella):
 
-![Diagram](images/Fig_ancestral-inserts-example.png)
+![Diagram](../images/Fig_ancestral-inserts-example.png)
 
 *Step 4:* Of the inserts that were inferred to be ancestral in *Step 3*, the combination of species the insert is found in can be used to infer the minimum age of the insert. For example, if the insert is found in Panesthia cribrata, Geoscapheus dilatatus and Neogeoscapheus hanni, the insert is at least as old as the ancestral node for these three species. First, the ancestral sequences identified in the previous step can be extracted using **seqkt**:  
 `seqtk subseq insert-sequences.fasta ancestral_insert-sequence-names.txt > ancestral_insertsequences.fasta`  
