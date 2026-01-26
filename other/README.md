@@ -66,7 +66,10 @@ This script will output to BLAST files - one for the Blattabacterium blast, and 
 
 *Step 3:* The two BLAST output files from *Step 2* are compared to infer the age of the inserts. If the % identity is higher for the Blattabacterium BLAST compared to the cockroach/termite inser BLAST, then it is likely a recent insert. If the % identity is higher for the insert BLAST compared to the Blattabacterium BLAST, then the insert is likely ancestral. If the BLAST results are similar, we do not have confidence to infer the age of the insert. This pipeline can be run using the following R code:  
 `parse-BLAST_blatta-vs-host.R`  
+   
+Clear separations between these three cases were evident in each of the analyses. For example, the image below shows all inserts from *Panesthia tryoni tryoni* (Eungella):
 
+![Diagram](images/Fig_ancestral-inserts-example.png)
 
 *Step 4:* Of the inserts that were inferred to be ancestral in *Step 3*, the combination of species the insert is found in can be used to infer the minimum age of the insert. For example, if the insert is found in Panesthia cribrata, Geoscapheus dilatatus and Neogeoscapheus hanni, the insert is at least as old as the ancestral node for these three species. First, the ancestral sequences identified in the previous step can be extracted using **seqkt**:  
 `seqtk subseq insert-sequences.fasta ancestral_insert-sequence-names.txt > ancestral_insertsequences.fasta`  
