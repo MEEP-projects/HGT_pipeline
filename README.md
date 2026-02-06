@@ -4,7 +4,7 @@
 Description of the different steps and scripts used to characterise HGT inserts descibed in Ewart et al. The scripts outlined below are in the 'scripts' folder.  
 
 ![Diagram](images/FigS1.png)
-
+Note, alternative thresholds were applied for steps with a red border in the schematic above.
   
 ***1. Characterising putative Blattabacterium HGT inserts***
 

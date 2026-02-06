@@ -100,6 +100,9 @@ When observing the raw sequence read alignments against the putative HGT inserts
 *Step 4:* The following script summarises the results of the previous script:  
 `count_HGT-alignment.sh`  
 
+This workflow and five examples can be seen in the following schematic:
+![Diagram](../images/alignments_fig.png)
+In the top left image, the dark gray bar at the top represents the assembled genomic sequence, blue bars indicate reads broadly aligned to the genome and considered host-derived, light gray bars indicate reads aligned only at the insertion region and considered endosymbiont-derived, red marks represent the putative HGT insert sequence consistently aligned across all reads, and “Mutations” denote base differences detected in short aligned reads compared with long aligned reads. Note that the “short” in “short aligned reads” refers to the length of the aligned sequence between endosymbiont and host genome, rather than the reads themselves, which were of a similar length to other long reads derived from host DNA. The five examples show raw reads that align to different HGT inserts (not all raw reads are shown). The top few reads that extend beyond the image all align to both the putative HGT insert and the surrounding host cockroach sequence. The shorter ones below are assessed to have derived from contaminant Blattabacterium (i.e., the contemporary endosymbiont, rather than the ancestral donor of HGT inserts). Note that the Blattabacterium reads are longer than displayed, but large portions are not visible because they did not align to the flanking regions surrounding the insert.
 
 
 
