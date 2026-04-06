@@ -20,7 +20,7 @@
 
 # Made a BLAST database for the filtered bacteria genome database
 #makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
-#makeblastdb -in all_GCF_no-blattabacterium.fasta -dbtype nucl
+#makeblastdb -in Blattabacterium-db.fasta -dbtype nucl
 
 #############################################
 ## Identifying non-target bacteria regions ##
@@ -28,27 +28,18 @@
 
 ## Set variables
 # bed file with putative HGT regions
-bed_basename=Zootermopsis-nevadensis-v2_filtered4
-# Target genome
-genome=Znevadensis_20230531.contig.fa
+bed_basename=Cryptotermes-secundus_filtered4_v2
+# Genome
+genome=Cryptotermes-secundus.genome.fasta
 # Number of threads to use for BLAST
 threads=2
 # Blattabacterium BLAST database
-blatta_db=Blattabacterium-db.fasta
+blatta_db=/Volumes/LaCie/USyd_working/gtdb_genomes_reps_r220/database/Blattabacterium-db.fasta
 # Bacteria BLAST database (using GTDB database; https://gtdb.ecogenomic.org/downloads)
-bacteria_db=all_GCF_no-blattabacterium.fasta
+bacteria_db=/Volumes/LaCie/USyd_working/gtdb_genomes_reps_r220/database/all_GCF_no-blattabacterium.fasta
 
-# Index the genome
-# Check if the index file exists
-if [ ! -f "${genome}.fai" ]; then
-    echo "Index file not found. Indexing the genome..."
-    samtools faidx ${genome}
-else
-    echo "Index file already exists. Skipping indexing."
-fi
-
-# Extract putative HGT regions
-bedtools getfasta -fi ${genome} -bed ${bed_basename}.bed > ${bed_basename}.fasta
+# Extract sequences from genome
+bedtools getfasta -fi ${genome} -bed ${bed_basename}.bed | sed "s/^>/>${prefix}_/" > ${bed_basename}.fasta
 
 
 ## BLAST each of the inserts against Blattabacterium genome database
@@ -70,7 +61,7 @@ sort -t, -k1,1 -k11,11g -k3,3gr -k4,4nr ${bed_basename}_BLASTing-Blatta-temp1.cs
 awk -F',' '!seen[$1]++' ${bed_basename}_BLASTing-Blatta-temp2.csv > ${bed_basename}_BLASTing-Blatta-temp3.csv
 
 # Extract the query IDs from your original FASTA file
-grep ">" ${bed_basename}.fasta | sed 's/>//' > query_ids.txt
+grep "^>" ${bed_basename}.fasta | cut -d' ' -f1 | sed 's/^>//' > query_ids.txt
 
 # Extract the query IDs from the filtered BLAST output
 awk -F, '{print $1}' ${bed_basename}_BLASTing-Blatta-temp3.csv | sort | uniq > hits_ids.txt
@@ -105,7 +96,7 @@ sort -t, -k1,1 -k11,11g -k3,3gr -k4,4nr ${bed_basename}_BLASTing-bacteria-temp1.
 awk -F',' '!seen[$1]++' ${bed_basename}_BLASTing-bacteria-temp2.csv > ${bed_basename}_BLASTing-bacteria-temp3.csv
 
 # Extract the query IDs from your original FASTA file
-grep ">" ${bed_basename}.fasta | sed 's/>//' > query_ids.txt
+grep "^>" ${bed_basename}.fasta | cut -d' ' -f1 | sed 's/^>//' > query_ids.txt
 
 # Extract the query IDs from the filtered BLAST output
 awk -F, '{print $1}' ${bed_basename}_BLASTing-bacteria-temp3.csv | sort | uniq > hits_ids.txt

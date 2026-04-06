@@ -11,9 +11,9 @@ library(dplyr)
 
 ## Input files
 # Blattabacterium blast hits
-blatta <- "Zootermopsis-nevadensis-v2_filtered4_BLASTing-Blatta.csv"
+blatta <- "Cr_punctulatus_filtered_v3_BLASTing-Blatta.csv"
 # Other bacteria blast hits
-bacteria <- "Zootermopsis-nevadensis-v2_filtered4_BLASTing-bacteria.csv"
+bacteria <- "Cr_punctulatus_filtered_v3_BLASTing-bacteria.csv"
 
 
 ## Thresholds
@@ -65,4 +65,4 @@ write.table(combined_res3$query_id, "inserts-names_to-keep.txt", quote = F, row.
 #sed 's/\(.*\):/\1####/' inserts-names_to-keep.txt > temp1.txt
 #sed 's/\(.*\)-/\1####/' temp1.txt > temp2.txt
 #awk -F '####' '{print $1 "\t" $2 "\t" $3}' temp2.txt > filtered_inserts.bed
-#rm temp1.txt temp2.txt
+#rm temp1.txt temp2.txt inserts-names_to-keep.txt
