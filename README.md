@@ -88,7 +88,7 @@ After running the pipeline with the updated identity and query coverage threshol
 
 Low-entropy regions are then found (and masked) using the sdust algorithm in the minimap package. Any "HGT" contigs with a contiguous masked region >= 50% of the total length are removed.
 
-This is achieved by running `2.5.1.batch_sdust.sh` to mask repetitive regions in a fasta file containing the HGT sequences, `2.5.2.replace_with_Ns.sh` to replace those regions with ambiguous nucleotides (Ns), and `2.5.3.N_content_contiguous.sh` to identify HGTs with contiguous runs of Ns representing >= 50% of their length.
+First, use `2.5.0.extract_inserts.sh` to extract the insert sequences into a FASTA file. Than run `2.5.1.batch_sdust.sh` to mask repetitive regions in a fasta file containing the HGT sequences, `2.5.2.replace_with_Ns.sh` to replace those regions with ambiguous nucleotides (Ns), and `2.5.3.N_content_contiguous.sh` to identify HGTs with contiguous runs of Ns representing >= 50% of their length. Finally, use `2.5.4.remove_low-entropy_inserts.sh` to remove inserts with excessively long low‑entropy regions from the inserts FASTA file.
 
 ***Step 2.5:*** For downstream analyses, it is crucial that the flanking cockroach DNA to either side of the inserts can be characterised. To ensure this is the case, HGTs for which either 300-bp flank of cockroach DNA comprises >= 50% Ns (due to ambiguities in sequencing or scaffolding).
 
