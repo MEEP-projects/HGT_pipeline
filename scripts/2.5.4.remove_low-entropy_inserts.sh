@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Input arguments
-fasta_file="$1"
-remove_list="$2"
-output_file="$3"
+fasta_file="$1" #original extracted inserts .fasta
+remove_list="$2" #result of 2.5.3
+output_file="$3" #cleaned insert .fasta
 
 # Check input parameters
 if [[ -z "$fasta_file" || -z "$remove_list" || -z "$output_file" ]]; then

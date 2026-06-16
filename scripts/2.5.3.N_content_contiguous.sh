@@ -1,7 +1,7 @@
 #!/bin/bash
 
-input_file=$1
-output_file=$2
+input_file=$1 #insert with low entropy sequences substituted by N.fasta
+output_file=$2 #list of low entropy sequences > 50% contig length, remove list
 
 if [[ -z $input_file || -z $output_file ]]; then
     echo "Usage: $0 input.fasta output.txt"

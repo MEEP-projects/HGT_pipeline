@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Input arguments
-fasta_file="$1"
-regions_file="$2"
-output_file="$3"
+fasta_file="$1" #insert fasta
+regions_file="$2" #sdust result.txt
+output_file="$3" #fasta, insert with low entropy sequences substituted by N
 
 # Check input parameters
 if [[ -z "$fasta_file" || -z "$regions_file" || -z "$output_file" ]]; then
