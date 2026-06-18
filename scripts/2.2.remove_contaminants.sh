@@ -20,10 +20,10 @@ while IFS= read -r line; do
   first_column=$(echo "$line" | awk '{print $1}')
 
   # Check if the value exists in file2
-  if ! grep -q -w "$first_column" "$file2"; then
+  if grep -q -w "$first_column" "$file2"; then
     # If it doesn't exist in file2, write the line to the output file
     echo "$line" >> "$output_file"
   fi
 done < "$file1"
 
-echo "Lines with first column values present in $file2 have been filtered out and saved to $output_file."
+echo "Lines with first column values PRESENT in $file2 have been saved to $output_file."
