@@ -31,3 +31,8 @@ plot(prop)
 # Keep only rows where the proportion is less than or equal to 20%
 filtered_inserts <- subset(fin, proportion <= 0.20)
 
+write.table(filtered_inserts,
+            file = "filtered_inserts.txt",
+            sep = "\t",
+            quote = FALSE,
+            row.names = FALSE)
